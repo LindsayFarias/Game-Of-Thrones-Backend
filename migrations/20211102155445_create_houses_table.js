@@ -1,7 +1,9 @@
 exports.up = function(knex) {
     return knex.schema.createTable('houses', table => {
-        table.text('order');
+        table.increments('id');
         table.text('name');
+        table.text('coat of arms');
+        table.text('location');
     })
 };
 
