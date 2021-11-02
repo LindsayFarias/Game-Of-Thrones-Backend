@@ -7,9 +7,11 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('characters').insert(
         characters.map((element) => {
+          let royalty;
+          royalty = element.royal ? true : false;
           return {name: element.characterName,
                   image: element.characterImageFull,
-                  royalty: element.royalty};
+                  royalty: royalty};
         })
       );
     });

@@ -2,7 +2,7 @@ const characters = require('../characters');
 
 exports.seed = function(knex) {
   
-  return knex('siblings_table').truncate()
+  return knex('siblings').truncate()
     .then(function() {
       let promiseArray = [];
       characters.map((el) => {
@@ -18,5 +18,5 @@ exports.seed = function(knex) {
   };
 
 const retrieveFromDB = async function(sibling1, sibling2, knex) {
-  return knex('siblings_table').insert({sibling_1: sibling1, sibling_2: sibling2});
+  return knex('siblings').insert({sibling_1: sibling1, sibling_2: sibling2});
 }
