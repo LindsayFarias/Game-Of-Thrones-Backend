@@ -7,7 +7,8 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('orders').insert(
         orders.map((element) => {
-          return {name: element.name};
+          return {name: element.name,
+                  image: element.image};
         })
       );
     });
