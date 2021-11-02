@@ -16,5 +16,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.14",
     "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "supertest": "^6.1.6"
   }
 }

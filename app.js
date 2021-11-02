@@ -6,11 +6,34 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development']);
 
-app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(
+    cors({
+        origin: "*",
+        methods: "GET" 
+    }));
+app.use(express.json());
+
+app.get('/GOT', async function(req, res) {
+
+    let query = JSON.stringify(req.query.name);
+
+    if (query) {
+        const id = await knex 
+            .select('id')
+            .from('characters')
+            .where({name: query})
+            .then((data) => data)
+            .catch((err) => res.status(404).send('Error, content not found'));
+
+        res.redirect(`/GOT/characters/${id}`);
+    }
+
+});
 
 app.get('/GOT/characters', async function(req, res) {
+
     const characters = await knex
         .select('name', 'royalty', 'image')
         .from('characters')
@@ -18,21 +41,26 @@ app.get('/GOT/characters', async function(req, res) {
         .catch((err) => res.status(404).send('Error, content not found'));
     
     const houses = await knex('house_character')
-
     const spouses = await knex('marriage_table')
-
     res.status(200).json({
         characters: characters,
         houses: houses,
         relationships: spouses
     });
-    
 });
 
-app.get('/GOT/character/:id', async function(req, res) {
-    let id = req.params.id;
-    id = parseInt(id)
-    console.log(id)
+app.get('/GOT/characters/:input', async function(req, res) {
+    const id = parseInt(req.params.input, 10);
+    let charName = await knex
+        .select('name')
+        .from('characters')
+        .where({id: id})
+        .then((data)=>data)
+        .catch((err) => res.status(404).send('Error, content not found'));
+
+    if(charName[0]) charName = charName[0].name
+    else res.status(404).send('Error, data not found');
+
     let houseName = await knex
         .select('house')
         .from('house_character')
@@ -70,16 +98,37 @@ app.get('/GOT/character/:id', async function(req, res) {
         .where({killed: charName});
 
     let result = [
-        { house: houseName},
+        { name: charName },
+        { house: houseName}, 
         { siblings: siblingList},
-        { parents: parentList },
-        { spouse: spouse},
-        { order: order},
-        { killed: killed},
+        { parents: parentList}, 
+        { spouse: spouse }, 
+        { order: order}, 
+        { killed: killed}, 
         { killer: killer}
     ];
 
     res.status(200).json(result);
+})
+
+app.get('/GOT/houses', async function(req, res) {
+    let houses = await knex('houses');
+    let house_members = await knex('house_character');
+
+    res.status(200).json([
+        {houses: houses},
+        {house_relations: house_members}
+    ]);
+});
+
+app.get('/GOT/orders', async function(req, res) {
+    let orders = await knex('orders');
+    let order_relations = await knex('order_character');
+
+    res.status(200).json([
+        { orders: orders },
+        { order_relations: order_relations }
+    ])
 })
 
 app.listen(PORT, () => {

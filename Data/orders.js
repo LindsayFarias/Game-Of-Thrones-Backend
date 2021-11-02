@@ -48,7 +48,7 @@ module.exports = [
         "name":"Golden Company",
         "image":'https://static.wikia.nocookie.net/gameofthrones/images/b/bd/Golden-Company-Main-Shield.png/revision/latest?cb=20201217133932'
     },
-    
+
     {
         "name":"The Faith",
         "image":'https://awoiaf.westeros.org/images/thumb/c/cd/Poor_Fellows.svg/1200px-Poor_Fellows.svg.png'
