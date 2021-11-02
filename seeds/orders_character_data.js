@@ -2,14 +2,14 @@ const characters = require('../Data/characters');
 
 exports.seed = function(knex) {
   
-  return knex('house_character').truncate()
+  return knex('order_character').truncate()
     .then(function() {
       let promiseArray = [];
       characters.map((el) => {
-        if (el.houseName) {
+        if (el.order) {
           let name = el.characterName;
-          el.houseName.forEach(function(house) {
-            promiseArray.push(retrieveFromDB(name, house, knex));
+          el.order.forEach(function(order) {
+            promiseArray.push(retrieveFromDB(name, order, knex));
           })
         }
       })
@@ -17,6 +17,6 @@ exports.seed = function(knex) {
     }).then((data)=>{return Promise.all(data)})
   };
 
-const retrieveFromDB = async function(name, house, knex) {
-  return knex('house_character').insert({house: house, character: name});
+const retrieveFromDB = async function(name, order, knex) {
+  return knex('order_character').insert({order: order, character: name});
 }

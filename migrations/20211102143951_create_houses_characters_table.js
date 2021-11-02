@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable('house_character', table => {
-        table.text('name');
+        table.text('character');
         table.text('house');
     })
 };

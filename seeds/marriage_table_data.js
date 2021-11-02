@@ -1,4 +1,4 @@
-const characters = require('../characters');
+const characters = require('../Data/characters');
 
 exports.seed = function(knex) {
   
