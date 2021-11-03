@@ -35,7 +35,7 @@ app.get('/GOT', async function(req, res) {
 app.get('/GOT/characters', async function(req, res) {
 
     const characters = await knex
-        .select('name', 'royalty', 'image')
+        .select('name', 'royalty', 'image', 'attack_value')
         .from('characters')
         .then((data) => data)
         .catch((err) => res.status(404).send('Error, content not found'));
@@ -97,6 +97,11 @@ app.get('/GOT/characters/:input', async function(req, res) {
         .from('kill_table')
         .where({killed: charName});
 
+    let strength = await knex
+        .select('attack_value')
+        .from('characters')
+        .where({name: charName});
+
     let result = [
         { name: charName },
         { house: houseName}, 
@@ -105,7 +110,8 @@ app.get('/GOT/characters/:input', async function(req, res) {
         { spouse: spouse }, 
         { order: order}, 
         { killed: killed}, 
-        { killer: killer}
+        { killer: killer}, 
+        { strength: strength}
     ];
 
     res.status(200).json(result);
@@ -129,6 +135,11 @@ app.get('/GOT/orders', async function(req, res) {
         { orders: orders },
         { order_relations: order_relations }
     ])
+})
+
+app.get('/GOT/duel', async function(req,res) {
+    let result = await knex('characters')
+    res.status(200).json(result)
 })
 
 app.listen(PORT, () => {
