@@ -15,23 +15,6 @@ app.use(
     }));
 app.use(express.json());
 
-app.get('/GOT', async function(req, res) {
-
-    let query = JSON.stringify(req.query.name);
-
-    if (query) {
-        const id = await knex 
-            .select('id')
-            .from('characters')
-            .where({name: query})
-            .then((data) => data)
-            .catch((err) => res.status(404).send('Error, content not found'));
-
-        res.redirect(`/GOT/characters/${id}`);
-    }
-
-});
-
 app.get('/GOT/characters', async function(req, res) {
 
     const characters = await knex
@@ -57,6 +40,7 @@ app.get('/GOT/characters', async function(req, res) {
         order_relations: order_relations,
         kills: kills,
     });
+
 });
 
 app.get('/GOT/houses', async function(req, res) {
@@ -84,6 +68,62 @@ app.get('/GOT/duel', async function(req,res) {
     res.status(200).json(result)
 })
 
-app.listen(PORT, () => {
-  console.log(`The server is running on ${PORT}`);
-});
+app.get('/GOT/tree/:id', async function(req,res) {
+    let charID = parseInt(req.params.id, 10);
+    console.log(charID);
+    let charName = await knex
+        .select('name')
+        .from('characters')
+        .where({id: charID})
+        .catch((err) => res.status(404).send('Error, data not found'));
+    
+    charName = charName[0].name;
+    console.log(charName)
+    
+    let result = await knex 
+        .select('parents.parent_1', 'parents.parent_2', 'siblings.sibling_2')
+        .from('parents')
+        .where({child: charName})
+        .innerJoin('siblings', function() {
+            this
+            .on('siblings.sibling_1', '=', 'parents.child')
+        })
+    res.status(200).send(result);
+})
+
+module.exports = {app , knex}
+
+// let result = await knex
+    //     .withRecursive('ancestors', (qb) => {
+    //         qb
+    //         .select('parent_1')
+    //         .from('parents')
+    //         .where({child: charName})
+    //         .union((qb) => {
+    //             qb
+    //             .select('name')
+    //             .from('characters')
+    //             .join('ancestors', 'ancestors.parentName')
+    //         })
+    //     })
+    //     .select('*')
+    //     .from('ancestors')
+
+    // let result = await knex
+    //     .withRecursive('ancestors', ['parentName'], (qb) => {
+    //         qb
+    //         .select('parent_1')
+    //         .from('parents')
+    //         .where({ child: charName })
+    //         .unionAll((qb) =>
+    //             qb
+    //             .select('characters.name')
+    //             .from('characters')
+    //             .join('ancestors',
+    //                 knex.ref('ancestors.parentName'),
+    //                 knex.ref('characters.name')
+    //             )
+    //         )
+    //     })
+    //     .select('*')
+    //     .from('ancestors');
