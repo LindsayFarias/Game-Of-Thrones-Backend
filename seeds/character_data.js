@@ -11,7 +11,8 @@ exports.seed = function(knex) {
           royalty = element.royal ? true : false;
           return {name: element.characterName,
                   image: element.characterImageFull,
-                  royalty: royalty};
+                  royalty: royalty,
+                  attack_value: Math.floor(Math.random() * (10 - 1) + 1)};
         })
       );
     });

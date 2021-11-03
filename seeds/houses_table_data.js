@@ -1,4 +1,4 @@
-const houses = require('../Data/houses.js');
+const houses = require('../Data/houses');
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries

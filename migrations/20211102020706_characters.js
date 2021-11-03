@@ -5,6 +5,7 @@ exports.up = function(knex) {
       table.string('name').notNullable();
       table.string('image');
       table.boolean('royalty');
+      table.integer('attack_value');
   })
 };
 

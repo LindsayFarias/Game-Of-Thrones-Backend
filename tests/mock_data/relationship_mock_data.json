@@ -1,3 +1,3 @@
-[{"child": "bob", "parent 1": "bob sr", "parent 2": "kate"},
-    {"child": "bobette", "parent 1": "bobette sr", "parent 2": "stacy"},
-    {"child": "bobby", "parent 1": "bob sr", "parent 2": "carrie"}]
+[{ "parent 1": "bob sr", "parent 2": "kate"},
+    { "parent 1": "bobette sr", "parent 2": "stacy"},
+    {"parent 1": "bob sr", "parent 2": "carrie"}]
