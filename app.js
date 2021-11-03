@@ -39,83 +39,25 @@ app.get('/GOT/characters', async function(req, res) {
         .from('characters')
         .then((data) => data)
         .catch((err) => res.status(404).send('Error, content not found'));
-    
-    const houses = await knex('house_character')
-    const spouses = await knex('marriage_table')
+    const houses = await knex('houses');
+    const orders = await knex('orders');
+    const house_relations = await knex('house_character');
+    const order_relations = await knex('order_character');
+    const spouses = await knex('marriage_table');
+    const siblings = await knex('siblings');
+    const kills = await knex('kill_table');
+
     res.status(200).json({
         characters: characters,
         houses: houses,
-        relationships: spouses
+        houses_relations: house_relations,
+        relationships: spouses,
+        siblings: siblings,
+        orders: orders,
+        order_relations: order_relations,
+        kills: kills,
     });
 });
-
-app.get('/GOT/characters/:input', async function(req, res) {
-    const id = parseInt(req.params.input, 10);
-    let charName = await knex
-        .select('name')
-        .from('characters')
-        .where({id: id})
-        .then((data)=>data)
-        .catch((err) => res.status(404).send('Error, content not found'));
-
-    if(charName[0]) charName = charName[0].name
-    else res.status(404).send('Error, data not found');
-
-    let houseName = await knex
-        .select('house')
-        .from('house_character')
-        .where({character: charName})
-        .catch((err) => res.status(404).send('Error, content not found'));
-    
-    let siblingList = await knex
-        .select('sibling_2')
-        .from('siblings')
-        .where({sibling_1: charName});
-
-    let parentList = await knex
-        .select('parent_1', 'parent_2')
-        .from('parents')
-        .where({child: charName});
-    
-    let spouse = await knex 
-        .select('spouse_2')
-        .from('marriage_table')
-        .where({spouse_1: charName});
-
-    let order = await knex
-        .select('order')
-        .from('order_character')
-        .where({character: charName});
-    
-    let killed = await knex
-        .select('killed')
-        .from('kill_table')
-        .where({killer: charName});
-
-    let killer = await knex
-        .select('killer')
-        .from('kill_table')
-        .where({killed: charName});
-
-    let strength = await knex
-        .select('attack_value')
-        .from('characters')
-        .where({name: charName});
-
-    let result = [
-        { name: charName },
-        { house: houseName}, 
-        { siblings: siblingList},
-        { parents: parentList}, 
-        { spouse: spouse }, 
-        { order: order}, 
-        { killed: killed}, 
-        { killer: killer}, 
-        { strength: strength}
-    ];
-
-    res.status(200).json(result);
-})
 
 app.get('/GOT/houses', async function(req, res) {
     let houses = await knex('houses');
