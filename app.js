@@ -66,6 +66,7 @@ app.get('/GOT/orders', async function(req, res) {
 
 app.get('/GOT/duel', async function(req,res) {
     let result = await knex('characters')
+        .select('name', 'attack_value', 'image')
     res.status(200).send(result)
 })
 

@@ -12,7 +12,7 @@ exports.seed = function(knex) {
           return {name: element.characterName,
                   image: element.characterImageFull,
                   royalty: royalty,
-                  attack_value: Math.floor(Math.random() * (10 - 1) + 1)};
+                  attack_value: Math.floor(Math.random() * (101 - 1) + 1)};
         })
       );
     });
