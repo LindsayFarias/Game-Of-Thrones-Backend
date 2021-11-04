@@ -18,14 +18,16 @@ app.use(express.json());
 app.get('/GOT/characters', async function(req, res) {
 
     const characters = await knex
-        .select('name', 'royalty', 'image', 'attack_value')
-        .from('characters')
-        .then((data) => data)
+        .select('c.name', 'c.royalty', 'c.image', 'c.attack_value', 'oc.order', 'hc.house')
+        .from('characters AS c')
+        .leftJoin('house_character AS hc', 'c.name', '=', 'hc.character')
+        .leftJoin('order_character AS oc', function(){
+            this
+            .on('oc.character', 'c.name')
+        })
         .catch((err) => res.status(404).send('Error, content not found'));
     const houses = await knex('houses');
     const orders = await knex('orders');
-    const house_relations = await knex('house_character');
-    const order_relations = await knex('order_character');
     const spouses = await knex('marriage_table');
     const siblings = await knex('siblings');
     const kills = await knex('kill_table');
@@ -33,11 +35,9 @@ app.get('/GOT/characters', async function(req, res) {
     res.status(200).json({
         characters: characters,
         houses: houses,
-        houses_relations: house_relations,
         relationships: spouses,
         siblings: siblings,
         orders: orders,
-        order_relations: order_relations,
         kills: kills,
     });
 
@@ -145,17 +145,16 @@ app.get('/GOT/tree/:id', async function(req,res) {
 
 module.exports = {app , knex}
 
-
 const findFamily = async (input, knex) => {
     console.log(input)
     return result = input == null ? undefined 
     : await knex 
-        .select('parents.parent_1', 'parents.parent_2', 'siblings.sibling_2')
-        .from('parents')
+        .select('p.parent_1', 'p.parent_2', 's.sibling_2')
+        .from('parents AS p')
         .where({child: input})
-        .innerJoin('siblings', function() {
+        .innerJoin('siblings AS s', function() {
             this
-            .on('siblings.sibling_1', '=', 'parents.child')
+            .on('s.sibling_1', 'p.child')
         })
         .then((res) => res);
 }
@@ -167,38 +166,3 @@ const findSiblings = async (input, knex) => {
         .from('siblings')
         .where({sibling_1: input});
 }
-
-// let result = await knex
-    //     .withRecursive('ancestors', (qb) => {
-    //         qb
-    //         .select('parent_1')
-    //         .from('parents')
-    //         .where({child: charName})
-    //         .union((qb) => {
-    //             qb
-    //             .select('name')
-    //             .from('characters')
-    //             .join('ancestors', 'ancestors.parentName')
-    //         })
-    //     })
-    //     .select('*')
-    //     .from('ancestors')
-
-    // let result = await knex
-    //     .withRecursive('ancestors', ['parentName'], (qb) => {
-    //         qb
-    //         .select('parent_1')
-    //         .from('parents')
-    //         .where({ child: charName })
-    //         .unionAll((qb) =>
-    //             qb
-    //             .select('characters.name')
-    //             .from('characters')
-    //             .join('ancestors',
-    //                 knex.ref('ancestors.parentName'),
-    //                 knex.ref('characters.name')
-    //             )
-    //         )
-    //     })
-    //     .select('*')
-    //     .from('ancestors');
