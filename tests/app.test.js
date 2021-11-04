@@ -1,13 +1,6 @@
 const {app, knex} = require('../app');
 const request = require('supertest');
-
-// const characters = require('mock_data/characters_mock_data.json');
-// const houses = require('mock_data/houses_mock_data.json');
-// const kill = require('mock_data/kill_mock_data.json');
-// const orders = require('mock_data/orders_mock_data.json');
-// const relationships = require('mock_data/relationship_mock_data.json');
-// const siblings = require('mock_data/siblings_mock_data.json');
-// const parents = require('mock_data/parents_mock_data.json');
+const { response } = require('express');
 
 describe('test suite description', () => {
   
@@ -34,14 +27,36 @@ describe('test suite description', () => {
     expect(typeof result).toEqual('object');
   });
 
-  it('/GOT/houses', async () => {
+  it('/GOT/houses route should work', async () => {
     const response = await request(app)
       .get('/GOT/houses')
       .expect(200)
 
-    expect(typeof response).toEqual('object');
-
+    expect(response.body).toHaveLength(2);
+    expect(response.body[0]).toHaveProperty('houses');
+    expect(response.body[0]['houses']).toHaveLength(23);
   }); 
+
+  it('/GOT/orders route should work', async () => {
+    const response = await request(app)
+      .get('/GOT/orders')
+      .expect(200)
+
+    expect(response.body).toHaveLength(2);
+    expect(response.body[0]).toHaveProperty('orders')
+    expect(response.body[0]['orders'][0]['name']).toContain('Night\'s Watch');
+  })
+
+  it('/GOT/tree/index should work', async () => {
+    const response = await request(app)
+      .get('/GOT/tree/16')
+      .expect(200);
+
+    expect(typeof response).toEqual('object');
+    expect(response.body['charName']).toBe('Arya Stark');
+    expect(response.body['childTree']).toHaveLength(4);
+  })
+  
 });
 
 

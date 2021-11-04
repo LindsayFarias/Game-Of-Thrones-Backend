@@ -4,7 +4,6 @@ exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex('houses').truncate()
     .then(function () {
-      console.log(houses)
       // Inserts seed entries
       return knex('houses').insert(
         houses.map((element) => {

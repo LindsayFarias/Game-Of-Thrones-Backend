@@ -26,13 +26,14 @@ app.get('/GOT/characters', async function(req, res) {
             .on('oc.character', 'c.name')
         })
         .catch((err) => res.status(404).send('Error, content not found'));
+
     const houses = await knex('houses');
     const orders = await knex('orders');
     const spouses = await knex('marriage_table');
     const siblings = await knex('siblings');
     const kills = await knex('kill_table');
 
-    res.status(200).json({
+    res.status(200).send({
         characters: characters,
         houses: houses,
         relationships: spouses,
@@ -47,7 +48,7 @@ app.get('/GOT/houses', async function(req, res) {
     let houses = await knex('houses');
     let house_members = await knex('house_character');
 
-    res.status(200).json([
+    res.status(200).send([
         {houses: houses},
         {house_relations: house_members}
     ]);
@@ -57,7 +58,7 @@ app.get('/GOT/orders', async function(req, res) {
     let orders = await knex('orders');
     let order_relations = await knex('order_character');
 
-    res.status(200).json([
+    res.status(200).send([
         { orders: orders },
         { order_relations: order_relations }
     ])
@@ -65,12 +66,12 @@ app.get('/GOT/orders', async function(req, res) {
 
 app.get('/GOT/duel', async function(req,res) {
     let result = await knex('characters')
-    res.status(200).json(result)
+    res.status(200).send(result)
 })
 
 app.get('/GOT/tree/:id', async function(req,res) {
     let charID = parseInt(req.params.id, 10);
-    console.log(charID);
+
     let charName = await knex
         .select('name')
         .from('characters')
@@ -78,11 +79,11 @@ app.get('/GOT/tree/:id', async function(req,res) {
         .catch((err) => res.status(404).send('Error, data not found'));
     
     charName = charName[0].name;
-    console.log(charName)
+
     
     //find child parents/siblings
     let childTree = await findFamily(charName, knex);
-    console.log(childTree);
+
 
     let parent1, parent2;
     //find parents siblings/parents
@@ -146,7 +147,7 @@ app.get('/GOT/tree/:id', async function(req,res) {
 module.exports = {app , knex}
 
 const findFamily = async (input, knex) => {
-    console.log(input)
+
     return result = input == null ? undefined 
     : await knex 
         .select('p.parent_1', 'p.parent_2', 's.sibling_2')
@@ -160,7 +161,7 @@ const findFamily = async (input, knex) => {
 }
 
 const findSiblings = async (input, knex) => {
-    console.log(input);
+
     return result = await knex 
         .select('sibling_2')
         .from('siblings')
