@@ -2,7 +2,7 @@
 
 ## Schema Design
 ![schema](./Data/screenShot.png)
->The Schema reaches offers connections between a character to their family members, people they have killed, their order, and their houses.
+>The Schema creates connections between a character to their family members, people they have killed, their order, and their houses.
 
 ## Data
 Create and Seed table with Game of Throne data. Create orders and houses JSON to pull from and utilize Game of Thrones data from repository found online. 
