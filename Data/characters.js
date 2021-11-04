@@ -842,11 +842,15 @@ module.exports = [
              "Ellaria Sand"
           ],
           "parentOf":[
-             "Trystane Martell"
+             "Trystane Martell",
+             "Arianne Martell",
+             "Quentyn Martell"
           ],
           "siblings":[
              "Elia Martell",
-             "Oberyn Martell"
+             "Oberyn Martell",
+             "Mors Martell",
+             "Olyvar Martell"
           ]
        },
        {
@@ -1029,7 +1033,9 @@ module.exports = [
           ],
           "siblings":[
              "Doran Martell",
-             "Oberyn Martell"
+             "Oberyn Martell",
+             "Mors Martell",
+             "Olyvar Martell"
           ]
        },
        {
@@ -1240,6 +1246,9 @@ module.exports = [
              "Qyburn"
           ],
           "killedBy":[
+             "Sandor Clegane"
+          ],
+          "siblings":[
              "Sandor Clegane"
           ]
        },
@@ -2754,7 +2763,9 @@ module.exports = [
           ],
           "siblings":[
              "Doran Martell",
-             "Elia Martell"
+             "Elia Martell",
+             "Mors Martell",
+             "Olyvar Martell"
           ]
        },
       
