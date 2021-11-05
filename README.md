@@ -42,3 +42,6 @@ Next create a database with relevant name:
  2. Make sure to configure knexfile.js with appropriate connection string with the following template: connection: '(image)://(image):(password)@localhost/(database name)'
  3. Once knex is configured and container has been started, npx knex migrate:latest and npx knex seed:run to populate database with character information
  4. npm start to bring your backend up so frontend can connect and retrieve data from it.
+
+## Front End Connection
+Follow [this link]('https://github.com/jpmhaggerty/sofi-front-end') to clone down repo for the frontend portion of the Game of Thrones App.
