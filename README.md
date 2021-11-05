@@ -30,7 +30,7 @@ Tests were used to ensure routes were working and returning data when called.
 
 ## Installation
 Fork and clone down git repository. npm install to install all packages required to run app backend.
-Next create a database with name relevant name:
+Next create a database with relevant name:
 1. If you are using Docker to store your data prior to deployment, open Docker app and run the container in which you will be storing your data. Will be utilizing the Postgres image in this app. Steps to set up and run a postgres container:
     * docker pull postgres
     * docker run --name (name of container) -e POSTGRES_PASSWORD=(password) -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
