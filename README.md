@@ -44,4 +44,4 @@ Next create a database with relevant name:
  4. npm start to bring your backend up so frontend can connect and retrieve data from it.
 
 ## Front End Connection
-Follow [this link]('https://github.com/jpmhaggerty/sofi-front-end') to clone down repo for the frontend portion of the Game of Thrones App.
+Follow [this link](https://github.com/jpmhaggerty/sofi-front-end) to clone down repo for the frontend portion of the Game of Thrones App.
